@@ -1,0 +1,228 @@
+
+/*********************************************************   OBJECTS   ***************************************************/
+
+--> In for/in loop Integer properties are sorted in order while other properties appears in order of creation.
+
+--> All Object properties have 3 Attributes :- 
+   Configurable :-  States Whether property can be deleted or changed
+   Enumerable   :-  whether a property can be returned in for/in loop or not.
+   Writable     :-  Specifies whether a property can be changed.
+   
+--> It Appears when we use Object.getOwnPropertyDescription(objectName,propertyName).
+--> we can also set it by 
+    Object.defineProperty(objectName,propertyName,{ writable:true,enumerable:false,configurable:true}).
+   
+   
+--> All properties inherited from Object.prototype are non-enumerable but will come true if we test by objectName.property in ObjectName
+--> If properties inherited from another object are enumerable and appears in for/in loop.
+--> If Properties inherited from parent object are non-enumerable then they will not appear in for/in loop but they will give true if 
+    tested like propertyName in ObjectName.  
+
+--> We can't delete a property which is inherited we can delete only those properties which are its own. Even on deleting inherited properties 
+    it returns true but they don't gets deleted.
+    
+--> Prototype of Object.prototype is null.
+
+--> Calling toString on an array gives a result similar to calling .join(",") on it.
+    So Array.prototype.toString == Object.prototype.toString is false
+    
+--> Object.prototype.toString.call([1, 2])  // [object Array]  It will but object then type inside []
+
+--> If we pass null to Object.create(null) then the resulting object doesn't derives from Object.prototype and then we can use that object as Map
+
+--> Object.keys only returns object's own keys not those in prototype.
+--> hasOwnProperty also gives the properties which are own properties of that object not inherited ones.
+
+--> The object given to a for/of loop is expected to be iterable. This means that it has a method named with the Symbol.iterator symbol.
+--> When called, that method should return an object that provides a second interface, iterator. This is the actual thing that iterates. It has a next     method that returns the next result. That result should be an object with a value property, providing the next value, and a done property, which       should be true when there are no more results and false otherwise.
+
+
+--> we can modify the properties of a const object . but we can't assign the same object name to another object.
+   const obj = {name:'Jamie'}; obj.name ='Joffery'; // No error works fine
+   but obj = {name :'Cersi'}; will give error
+   
+--> Object.assign() is used to clone an object into new object.It only copies enumerable and own properties from a source object to a target object.
+--> All the properties which have same name in the target and source object gets overriten by the properties of source object.
+
+let user = { name: "John" };
+Object.assign(user, { name: "Pete", isAdmin: true });
+// now user = { name: "Pete", isAdmin: true }
+
+Object.keys(obj) – returns an array of keys.
+Object.values(obj) – returns an array of values.
+Object.entries(obj) – returns an array of [key, value] pairs.
+
+--> Object.* returns a iterable ie. a real Array.
+--> Just like a for..in loop, these methods ignore properties that use Symbol(...) as keys.
+--> If we want symbolic keys too, then there’s a separate method Object.getOwnPropertySymbols that returns an array of only symbolic keys.
+
+
+/****************************************** CONVERSION (Number, String, Arrays)   ***********************************************************/
+
+--> Number() or + will directly give NaN for any string which don't contains only number.
+--> parseFloat() and parseNumber() will try to convert string into number if it contains only a number part.
+    parseInt('100px')    :- 100
+    parseFloat('12.5em') :- 12.5
+    parseInt('a123')   // NaN, the first symbol stops the process
+    
+** String :- 
+
+--> includes() :- whether a string includes a string
+--> startsWith() and endsWith() do exactly what they say.
+--> There are 3 methods in JavaScript to get a substring: substring, substr and slice.
+    1) slice() :- Returns the part of the string from start to (but not including) end.
+        'stringify'.slice(0,5) :- strin
+        --> if no second arg then slice goes till end.
+        --> -ve arguments means counting will start from right end and indexing will start from 1 not 0.
+        
+    2) substring() :- Returns the part of the string between start and end.
+                      This is almost the same as slice, but it allows start to be greater than end.
+                      Negative arguments are not supported, they are treated as 0.
+                                                                                          
+        let str = "stringify";
+        // these are same for substring
+        alert( str.substring(2, 6) ); // "ring"
+        alert( str.substring(6, 2) ); // "ring"
+        
+    3) substr(start,length) :- Returns the part of the string from start, with the given length.
+                               It allows us to specify length instead of ending index.
+                               First argument may be negative to count from end and from end index starts with 1 not 0.
+                               
+    --> All strings are encoded using UTF-16. That is: each character has a corresponding numeric code.
+
+** ARRAYS :- 
+
+--> Array internally works as objects in JS.
+--> var arr =[]; arr[99]='prop99';
+    arr.length = 100;
+--> arr.age = 25; // is also a valid property but length of arr will still be 100.
+--> we can apply for..of and for..in loop on Arrays. for..in will give all properties on Array both numeric and non-numeric.
+--> All numeric properties can be assigned only using [] and will be considered as index and non numeric can be added both way.
+--> Non -numeric properties will not be added into length of array but will appear in for..in loop and can be accessed using both [] and . notation
+--> Length property of Array can be reduced but not rollbacked and then array items will be lost.
+
+** ARRAY METHODS : - 
+
+1) splice :- arr.splice(index[, deleteCount, elem1, ..., elemN])
+          It starts from index position removes deleteCount elements and then inserts elem1,...,elemN at their place.
+          Returns the array of removed items.
+          Negative indexes are allowed. they specify position from end.
+          This method can also be used to insert elements at a position for that we need to mention deleteCount as 0.
+          
+2) slice  :- arr.slice(start, end)
+           It returns a new Array where it copies items from start to end not including end.
+           In case of -ve indexes position from array end is assumed.
+           
+3) find  :-  arr.find(function(item,index,array){}); item :- each item, index :- each index, array :- array itself
+
+            let users = [
+              {id: 1, name: "John"},
+              {id: 2, name: "Pete"},
+              {id: 3, name: "Mary"}
+            ];
+
+            let user = users.find(item => item.id == 1);
+            alert(user.name);
+-->         If it returns true, the search is stopped, the item is returned. If nothing found, undefined is returned.
+
+4) filter  :-  arr.filter(function(item,index,array){})
+               Syntax is almost same as find but it returns an array of all matching elements.
+               
+5) map     :- same syntax pass callback function and is used to map array elements to another value.
+
+6) sort    :- sort() will by default sort the array elements by considering array elements as string . we can also pass a function in sort() function               to apply our own sorting logic.
+
+7) reverse :- It will reverse the order of elements of array.
+
+/***********************************************************  SYMBOLS   ***********************************************************/
+
+--> By Specification Object property key can only be String type and Symbol type.
+--> let id = Symbol("id"); // id is a symbol with the description "id"
+--> Symbols are guaranteed to be unique . Even if we create many symbols with same description.Description is just the label.
+--> Symbols don’t auto-convert to a string.Most values in JS auto convert to String but Symbols are different.
+--> alert(Symbol('id')); // error as cannot convert Symbol value to String.
+--> But even if we want it to convert to String then we should use Symbol('id').toString().
+--> To add a Symbol property in an object we use [id] = value;i.e. with square brackets otherwise it will be treated as string. 
+
+--> Object properties which are of Symbol type are enumerable by default but even after that they don't appear in for/in loop!!!!(Hiding Concept)
+--> But Symbol prop name in object will return true.
+--> Object.assign() will assign both string and Symbolic properties.
+--> Object.getOwnPropertySymbols(objectName) will return an array which will contain all the properties of type Symbol of that object.
+
+--> There exists a Global Symbol Registry. We can create Symbols in that registry and access them later. If there exists a Symbol with same name
+    then it returns the same Symbol Otherwise it creates a new Symbol and stores it in registry with key name.These are called global symbols 
+    and they are accessible throughout the app.
+    
+    let id = Symbol.for('id'); let idAgain = Symbol.for('id'); id == idAgain   // true
+
+--> Symbol.keyFor(Symbol) returns the name by a global Symbol.Internally it uses global symbol registry to look up for symbols.It doesn't works
+    for non-global symbols.If Symbol is not global it will return undefined.
+    
+/***********************************************************    ITERABLES    ***********************************************************/
+
+--> Iterable objects is a generalization of arrays. A Concept that allows an Object useable in for...of loop
+--> To make an object Iterable i.e. let for..of be used by object we need to add a method to the object named Symbol.iterator (built-in symbol)
+
+    1) When for..of starts it calls that method or error if not found.
+    2) The method must returns an iterator - an object with the method next.
+    3) when for..of wants the next value it calls next() on that object.
+    4) Result of next() must have the form {done:boolean, value:any}, where done = true means that iteration is finished,otherwise value must be a new    value.
+    
+--> Iterables are objects that implements the Symbol.iterator method as described above.
+--> Array-likes are objects that have indexes and length, so they look like arrays.
+
+/***************************************************************   Rest parameters and spread operator    ******************************************************************/
+
+--> Rest parameter can be mentioned in function argument using ...  They mean gather the remaining parameters into an array.
+--> The Rest parameter must be last argument as all remaining args gets accumulated in Rest variable so no point in mentioning arg after Rest arg.
+--> Typeof Rest arg is Array and there also exists arguments which have all arguments but type of arguments is not Array but it is Iterable.
+--> Arrow functions neither have their own this neither arguments object either.
+
+
+/**************************************************************            Map, Set, WeakMap and WeakSet      *********************************************************************/
+
+--> Map is a collection of keyed data items, just like object. But Map allows keys of any type.
+--> keys are not converted to strings. Any type of key is possible.
+
+/*********************************************************  CONSTRUCTOR FUNCTION    ***************************************************/
+
+--> If we call a function with or without new keyword we can check it inside the function that whether it is called using new or not 
+    using new.target . If new.target returns true then it is called using new keyword.
+    
+--> If a constructor function returns an object explicitly then only return this gets overriden and that object is returned instead of this.
+    In all other cases ie. if you return a primitive or empty return only this will be returned.
+
+/*********************************************************  SCOPE & HOISTING   ***************************************************/
+
+--> All Functions in setTimeout are executed in global Namespace.
+
+--> All Variable declarations are hoisted (lifted and declared) to the top of the function if defined in a function , or top of the global context,
+    if outside a function. 
+--> Only variable declartions are hoisted to the top , not variable initialization or assignment.
+
+--> Function declaration overrides variable declaration when hoisted ie. when name of a variable and function is same. 
+--> But variable assignment(initialization) overrides the function declaration if name of both are same. 
+--> Function expressions are not hoisted.
+
+--> In strict mode an error will occur if you assign a variable a value without first declaring it. Always declare your variable.
+
+
+
+/*********************************************************     CLOSURES    ***************************************************/
+
+--> A Closure is an inner function which have access to it's outer function's variable. Closure has thre scope chains :- Access to its own scope,
+    Access to outer function variables and access to global variables.
+    
+--> Inner function also have access to the outer function parameters. Inner function cannot call outer function's arguments object however it can         call outer functions parameter directly.
+
+--> jQuery event handlers have access to the variable to its enclosing scope even if that handler executes after that event occurs.
+
+--> Callback functions of event handlers are closures as it can access the variables of event handler function and also global variable.
+
+--> Closure have access to the outer function's variables even after the outer function returns.
+
+--> Closures store references to the outer function’s variables. So, even if a variable is being modified then also the latest value of that variable     is being returned.
+
+--> using for loop and then setting a function which returns a value based on for loop indexes will always yield last index as before calling that         closure outside the for loop the value of i is incresed and closure uses reference to access their parent's variables
+    We can use IIFEs to sort this problem
+

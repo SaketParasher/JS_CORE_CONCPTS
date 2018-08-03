@@ -1,0 +1,42 @@
+
+/*********************** DATA TYPES **********************/
+
+1) Number
+2) String
+3) Boolean
+4) null         // type of null is object. Its a special value with a sense of 'nothing' or 'empty' or 'value unknown'.
+5) undefined    // undefined means value is not assigned ie. var is declared but not assigned.
+6) objects
+7) Symbol       // used to create unique identifiers for objects 
+
+
+--> CONVERSIONS :- 
+  
+  1) ToNumber :- 
+     undefined --> NaN
+     null --> 0
+     true or false --> 1 or 0
+     string --> If number in string then converted to number or NaN.
+     --> Any Mathematical operation will try to convert any value into number if possible it will happen otherwise NaN
+     --> + behaves differently. If String with + it will try to concat
+     
+     
+  2) ToString :- 
+     
+  3) ToBoolean :- 
+     null,undefined, " " and NaN becomes false
+     rest everything is true  even "0".
+     
+     
+     "" + 1 + 0     --> "10"
+     "" - 1 + 0     --> -1
+     true + false   --> 1
+     6 / "3"        --> 2
+     "2" * "3"      --> 6
+     4 + 5 + "px"   --> "45px"
+     "$" + 4 + 5    --> "$45"
+     "4" - 2        --> 2
+     "4px" - 2      --> NaN
+     7 / 0          --> Infinity
+     null + 1       --> 1
+     undefined + 1  --> NaN
