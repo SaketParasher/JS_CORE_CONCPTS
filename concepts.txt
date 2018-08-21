@@ -3,10 +3,10 @@
 
 --> In for/in loop Integer properties are sorted in order while other properties appears in order of creation.
 
---> All Object properties have 3 Attributes :- 
+--> All Object properties have 3 Attributes called Property Flags :- 
    Configurable :-  States Whether property can be deleted or changed
-   Enumerable   :-  whether a property can be returned in for/in loop or not.
-   Writable     :-  Specifies whether a property can be changed.
+   Enumerable   :-  whether a property can be returned in for/in loop or not if TRUE.
+   Writable     :-  Specifies whether a property can be changed if TRUE otherwise read-only.
    
 --> It Appears when we use Object.getOwnPropertyDescription(objectName,propertyName).
 --> we can also set it by 
